@@ -15,7 +15,7 @@ namespace MaximCS
                 throw new ArgumentException("Input can't be empty");
             }
 
-            var invalidChars = input.Where(c => !char.IsLower(c) || !char.IsLetter(c)).Distinct().ToArray();
+            var invalidChars = input.Where(c => c < 'a' || c > 'z').Distinct().ToArray();
             if (invalidChars.Length > 0)
             {
                 throw new ArgumentException($"Invalid characters in input: {new string(invalidChars)}");
