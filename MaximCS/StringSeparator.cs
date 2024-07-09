@@ -27,14 +27,14 @@ namespace MaximCS
                 if ((input.Length & 1) == 0)
                 {
                     int mid = input.Length / 2;
-                    string firstHalf = input.Substring(0, mid);
-                    string secondHalf = input.Substring(mid);
+                    string firstHalf = string.Concat(input.Take(mid).Reverse());
+                    string secondHalf = string.Concat(input.Skip(mid).Reverse());
 
-                    processedString = ReverseString(firstHalf) + ReverseString(secondHalf);
+                    processedString = firstHalf + secondHalf;
                 }
                 else
                 {
-                    string reversedInput = ReverseString(input);
+                    string reversedInput = string.Concat(input.Reverse());
                     processedString = reversedInput + input;
                 }
             }
@@ -47,10 +47,6 @@ namespace MaximCS
 
             return (processedString, charCount);
         }
-
-        private static string ReverseString(string str)
-        {
-            return new string(str.Reverse().ToArray());
-        }
     }
+
 }
