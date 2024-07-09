@@ -8,8 +8,14 @@
             {
                 Console.WriteLine("Enter a string: ");
                 string input = Console.ReadLine();
-                string result = StringSeparator.Do(input);
-                Console.WriteLine("Processed string: " + result);
+                var result = StringSeparator.Do(input);
+
+                Console.WriteLine($"Processed string: {result.ProcessedString}");
+                Console.WriteLine("Character count:");
+                foreach (var kvp in result.CharCount)
+                {
+                    Console.WriteLine($"{kvp.Key}: {kvp.Value}");
+                }
             }
             catch (Exception ex)
             {

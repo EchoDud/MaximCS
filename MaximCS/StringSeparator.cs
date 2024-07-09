@@ -8,7 +8,7 @@ namespace MaximCS
 {
     internal class StringSeparator
     {
-        public static string Do(string input)
+        public static (string ProcessedString, Dictionary<char, int> CharCount) Do(string input)
         {
             if (string.IsNullOrEmpty(input))
             {
@@ -21,31 +21,32 @@ namespace MaximCS
                 throw new ArgumentException($"Invalid characters in input: {new string(invalidChars)}");
             }
 
+            string processedString;
             try
             {
                 if ((input.Length & 1) == 0)
                 {
                     int mid = input.Length / 2;
-                    string firstHalf = input.Substring(0, mid);
-                    string secondHalf = input.Substring(mid);
+                    string firstHalf = string.Concat(input.Take(mid).Reverse());
+                    string secondHalf = string.Concat(input.Skip(mid).Reverse());
 
-                    return ReverseString(firstHalf) + ReverseString(secondHalf);
+                    processedString = firstHalf + secondHalf;
                 }
                 else
                 {
-                    string reversedInput = ReverseString(input);
-                    return reversedInput + input;
+                    string reversedInput = string.Concat(input.Reverse());
+                    processedString = reversedInput + input;
                 }
             }
             catch (Exception ex)
             {
                 throw new Exception("Something went wrong", ex);
             }
-        }
 
-        private static string ReverseString(string str)
-        {
-            return new string(str.Reverse().ToArray());
+            var charCount = processedString.GroupBy(c => c).ToDictionary(g => g.Key, g => g.Count());
+
+            return (processedString, charCount);
         }
     }
+
 }
