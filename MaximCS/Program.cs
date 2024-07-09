@@ -6,9 +6,10 @@
         {
             try
             {
+                Console.WriteLine("Enter a string: ");
                 string input = Console.ReadLine();
                 string result = StringSeparator.Do(input);
-                Console.WriteLine(result);
+                Console.WriteLine("Processed string: " + result);
             }
             catch (Exception ex)
             {
