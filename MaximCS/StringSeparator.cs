@@ -12,7 +12,13 @@ namespace MaximCS
         {
             if (string.IsNullOrEmpty(input))
             {
-                throw new ArgumentException("Input cant be empty");
+                throw new ArgumentException("Input can't be empty");
+            }
+
+            var invalidChars = input.Where(c => c < 'a' || c > 'z').Distinct().ToArray();
+            if (invalidChars.Length > 0)
+            {
+                throw new ArgumentException($"Invalid characters in input: {new string(invalidChars)}");
             }
 
             try
@@ -33,7 +39,7 @@ namespace MaximCS
             }
             catch (Exception ex)
             {
-                throw new Exception("Somthing went wrong", ex);
+                throw new Exception("Something went wrong", ex);
             }
         }
 
@@ -41,7 +47,5 @@ namespace MaximCS
         {
             return new string(str.Reverse().ToArray());
         }
-
-
     }
 }
