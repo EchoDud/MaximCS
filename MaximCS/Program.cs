@@ -16,6 +16,15 @@
                 {
                     Console.WriteLine($"{kvp.Key}: {kvp.Value}");
                 }
+
+                if (!string.IsNullOrEmpty(result.LongestVowelSubstring))
+                {
+                    Console.WriteLine($"Longest vowel substring: {result.LongestVowelSubstring}");
+                }
+                else
+                {
+                    Console.WriteLine("No valid vowel substring found.");
+                }
             }
             catch (Exception ex)
             {

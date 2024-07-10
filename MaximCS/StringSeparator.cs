@@ -8,7 +8,7 @@ namespace MaximCS
 {
     internal class StringSeparator
     {
-        public static (string ProcessedString, Dictionary<char, int> CharCount) Do(string input)
+        public static (string ProcessedString, Dictionary<char, int> CharCount, string LongestVowelSubstring) Do(string input)
         {
             if (string.IsNullOrEmpty(input))
             {
@@ -45,7 +45,33 @@ namespace MaximCS
 
             var charCount = processedString.GroupBy(c => c).ToDictionary(g => g.Key, g => g.Count());
 
-            return (processedString, charCount);
+            string longestVowelSubstring = FindLongestVowelSubstring(processedString);
+
+            return (processedString, charCount, longestVowelSubstring);
+        }
+
+        private static string FindLongestVowelSubstring(string input)
+        {
+            HashSet<char> vowels = new HashSet<char> { 'a', 'e', 'i', 'o', 'u', 'y' };
+            int start = -1, end = -1, maxLength = 0;
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (vowels.Contains(input[i]))
+                {
+                    for (int j = i; j < input.Length; j++)
+                    {
+                        if (vowels.Contains(input[j]) && (j - i + 1) > maxLength)
+                        {
+                            start = i;
+                            end = j;
+                            maxLength = j - i + 1;
+                        }
+                    }
+                }
+            }
+
+            return start != -1 && end != -1 ? input.Substring(start, end - start + 1) : string.Empty;
         }
     }
 
