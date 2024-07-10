@@ -2,7 +2,7 @@
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             try
             {
@@ -25,7 +25,10 @@
                         throw new ArgumentException("Invalid choice for sorting method");
                 }
 
-                var result = StringSeparator.Do(input, sorter);
+                var apiUrl = "https://www.randomnumberapi.com/api/v1.0/random";
+                var apiClient = new RandomNumberApiClient(apiUrl);
+
+                var result = await StringSeparator.Do(input, sorter, apiClient);
 
                 Console.WriteLine($"Processed string: {result.ProcessedString}");
                 Console.WriteLine("Character count:");
@@ -44,6 +47,15 @@
                 }
 
                 Console.WriteLine($"Sorted string: {result.SortedString}");
+
+                if (!string.IsNullOrEmpty(result.TrimmedString))
+                {
+                    Console.WriteLine($"Trimmed string: {result.TrimmedString}");
+                }
+                else
+                {
+                    Console.WriteLine("Failed to get trimmed string from API.");
+                }
             }
             catch (Exception ex)
             {

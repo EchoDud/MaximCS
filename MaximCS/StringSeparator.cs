@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MaximCS
 {
     internal class StringSeparator
     {
-        public static (string ProcessedString, Dictionary<char, int> CharCount, string LongestVowelSubstring, string SortedString) Do(string input, ISorter sorter)
+        public static async Task<(string ProcessedString, Dictionary<char, int> CharCount, string LongestVowelSubstring, string SortedString, string TrimmedString)> Do(string input, ISorter sorter, RandomNumberApiClient apiClient)
         {
             if (string.IsNullOrEmpty(input))
             {
@@ -49,7 +51,18 @@ namespace MaximCS
 
             string sortedString = sorter.Sort(processedString);
 
-            return (processedString, charCount, longestVowelSubstring, sortedString);
+            string trimmedString = string.Empty;
+            try
+            {
+                int randomIndex = await apiClient.GetRandomNumberAsync(processedString.Length - 1);
+                trimmedString = processedString.Remove(randomIndex, 1);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to get random number from API: {ex.Message}");
+            }
+
+            return (processedString, charCount, longestVowelSubstring, sortedString, trimmedString);
         }
 
         private static string FindLongestVowelSubstring(string input)
