@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace MaximCS
+namespace MaximCS.API
 {
     public class RandomNumberApiClient //тут можно и интерфейсы и родительский класс навернуть, но мне лень (: 
     {
