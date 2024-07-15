@@ -13,17 +13,26 @@ namespace MaximCS.Controllers
         private readonly ISorter treeSorter = new TreeSorter();
         private readonly IConfiguration _configuration;
         private readonly IApiClient apiClient;
+        private readonly SemaphoreSlim _semaphore;
 
         public StringSeparatorController(IConfiguration configuration)
         {
             _configuration = configuration;
             string apiUrl = _configuration["RandomApi"];
             apiClient = new RandomNumberApiClient(apiUrl); //тут можно придумать чтото интересное
+
+            int parallelLimit = _configuration.GetValue<int>("Settings:ParallelLimit");
+            _semaphore = new SemaphoreSlim(parallelLimit, parallelLimit);
         }
 
         [HttpGet]
         public async Task<IActionResult> Get(string input, string sortMethod)
         {
+            if (!await _semaphore.WaitAsync(0))
+            {
+                return StatusCode(503, "Service is currently unavailable due to high load. Please try again later.");
+            }
+
             try
             {
                 ISorter sorter = sortMethod switch
@@ -53,6 +62,10 @@ namespace MaximCS.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
+            }
+            finally
+            {
+                _semaphore.Release();
             }
         }
     }
