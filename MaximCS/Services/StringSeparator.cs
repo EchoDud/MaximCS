@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using MaximCS.API;
+using MaximCS.Models;
 
-namespace MaximCS
+namespace MaximCS.Services
 {
     internal class StringSeparator
     {
@@ -76,7 +77,7 @@ namespace MaximCS
                 {
                     for (int j = i; j < input.Length; j++)
                     {
-                        if (vowels.Contains(input[j]) && (j - i + 1) > maxLength)
+                        if (vowels.Contains(input[j]) && j - i + 1 > maxLength)
                         {
                             start = i;
                             end = j;
