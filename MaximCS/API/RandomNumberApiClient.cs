@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MaximCS.API
 {
-    public class RandomNumberApiClient //тут можно и интерфейсы и родительский класс навернуть, но мне лень (: 
+    public class RandomNumberApiClient : IApiClient
     {
         private readonly HttpClient _client;
         private readonly string _apiUrl;
@@ -56,6 +56,4 @@ namespace MaximCS.API
             }
         }
     }
-
-
 }

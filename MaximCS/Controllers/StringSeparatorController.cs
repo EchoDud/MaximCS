@@ -11,7 +11,15 @@ namespace MaximCS.Controllers
     {
         private readonly ISorter quickSorter = new QuickSorter();
         private readonly ISorter treeSorter = new TreeSorter();
-        private readonly RandomNumberApiClient apiClient = new RandomNumberApiClient("https://www.randomnumberapi.com/api/v1.0/random");
+        private readonly IConfiguration _configuration;
+        private readonly IApiClient apiClient;
+
+        public StringSeparatorController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+            string apiUrl = _configuration["RandomApi"];
+            apiClient = new RandomNumberApiClient(apiUrl); //тут можно придумать чтото интересное
+        }
 
         [HttpGet]
         public async Task<IActionResult> Get(string input, string sortMethod)
@@ -25,7 +33,9 @@ namespace MaximCS.Controllers
                     _ => throw new ArgumentException("Invalid sorting method")
                 };
 
-                var result = await StringSeparator.Do(input, sorter, apiClient);
+                var blacklist = _configuration.GetSection("Settings:BlackList").Get<List<string>>() ?? new List<string>();
+
+                var result = await StringSeparator.Do(input, sorter, apiClient, blacklist);
 
                 return Ok(new
                 {
@@ -46,4 +56,6 @@ namespace MaximCS.Controllers
             }
         }
     }
+
+
 }

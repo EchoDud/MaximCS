@@ -11,11 +11,16 @@ namespace MaximCS.Services
 {
     internal class StringSeparator
     {
-        public static async Task<(string ProcessedString, Dictionary<char, int> CharCount, string LongestVowelSubstring, string SortedString, string TrimmedString)> Do(string input, ISorter sorter, RandomNumberApiClient apiClient)
+        public static async Task<(string ProcessedString, Dictionary<char, int> CharCount, string LongestVowelSubstring, string SortedString, string TrimmedString)> Do(string input, ISorter sorter, IApiClient apiClient, List<string> blacklist)
         {
             if (string.IsNullOrEmpty(input))
             {
                 throw new ArgumentException("Input can't be empty");
+            }
+
+            if (blacklist.Contains(input))
+            {
+                throw new ArgumentException($"Input is blacklisted: {input}");
             }
 
             var invalidChars = input.Where(c => c < 'a' || c > 'z').Distinct().ToArray();
@@ -90,5 +95,6 @@ namespace MaximCS.Services
             return start != -1 && end != -1 ? input.Substring(start, end - start + 1) : string.Empty;
         }
     }
+
 
 }
