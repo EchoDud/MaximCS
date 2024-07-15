@@ -10,7 +10,10 @@
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
             var app = builder.Build();
+
 
             if (app.Environment.IsDevelopment())
             {
