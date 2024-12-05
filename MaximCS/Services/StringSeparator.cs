@@ -9,7 +9,7 @@ using MaximCS.Models;
 
 namespace MaximCS.Services
 {
-    internal class StringSeparator
+    public class StringSeparator
     {
         public static async Task<(string ProcessedString, Dictionary<char, int> CharCount, string LongestVowelSubstring, string SortedString, string TrimmedString)> Do(string input, ISorter sorter, IApiClient apiClient, List<string> blacklist)
         {
